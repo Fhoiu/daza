@@ -15,7 +15,7 @@ from module.training_module import (
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="仅执行 LSTM 用电预测训练流程")
     parser.add_argument("--data-path", type=str, default="data/power_consumption.csv", help="输入 CSV 路径")
-    parser.add_argument("--checkpoint-path", type=str, default="checkpoints/lstm_power.pt", help="checkpoint 输出路径")
+    parser.add_argument("--checkpoint-path", type=str, default="checkpoints/lstm_power_normal.pt", help="checkpoint 输出路径（正常模型）")
     parser.add_argument("--train-users", type=int, default=400, help="训练用户数量")
     parser.add_argument("--val-users", type=int, default=50, help="验证用户数量")
     parser.add_argument("--test-users", type=int, default=50, help="测试用户数量（仅用于划分，训练阶段不会用到）")
@@ -28,6 +28,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--num-layers", type=int, default=2, help="LSTM 层数")
     parser.add_argument("--dropout", type=float, default=0.1, help="LSTM dropout")
     parser.add_argument("--mask-ratio", type=float, default=0.5, help="攻击阶段默认 mask 比例（随 checkpoint 保存）")
+    parser.add_argument("--dp-use", action="store_true", help="启用简单差分隐私训练（梯度裁剪+高斯噪声）")
+    parser.add_argument("--dp-clip", type=float, default=1.0, help="DP 梯度裁剪阈值（L2 范数上限）")
+    parser.add_argument("--dp-noise-mult", type=float, default=0.5, help="DP 噪声倍数，噪声标准差 = dp_noise_mult * dp_clip")
     parser.add_argument("--predict-only", action="store_true", help="仅加载现有 checkpoint，跳过训练")
     return parser.parse_args()
 
@@ -53,6 +56,9 @@ def main(args: argparse.Namespace):
         num_layers=args.num_layers,
         dropout=args.dropout,
         mask_ratio=args.mask_ratio,
+        dp_use=args.dp_use,
+        dp_clip=args.dp_clip,
+        dp_noise_mult=args.dp_noise_mult,
     )
 
     run_training_stage(

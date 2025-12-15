@@ -24,6 +24,9 @@ class Config:
     num_layers: int = 2
     dropout: float = 0.1
     mask_ratio: float = 0.5
+    dp_use: bool = False
+    dp_clip: float = 1.0
+    dp_noise_mult: float = 0.0
 
 
 def load_dataset(csv_path: Path) -> pd.DataFrame:
@@ -199,6 +202,61 @@ def train_model(
     return final_state
 
 
+def train_model_dp(
+    model: nn.Module,
+    train_loader: DataLoader,
+    val_loader: DataLoader,
+    epochs: int = 30,
+    lr: float = 1e-3,
+    dp_clip: float = 1.0,
+    dp_noise_mult: float = 0.0,
+):
+    model.to(DEVICE)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    criterion = nn.MSELoss()
+    best_val = float("inf")
+    best_state = None
+
+    for epoch in range(1, epochs + 1):
+        model.train()
+        total_loss = 0.0
+        for x, y in train_loader:
+            x, y = x.to(DEVICE), y.to(DEVICE)
+            optimizer.zero_grad()
+            preds = model(x)
+            loss = criterion(preds, y)
+            loss.backward()
+
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=dp_clip)
+            if dp_noise_mult > 0.0:
+                for p in model.parameters():
+                    if p.grad is None:
+                        continue
+                    noise = torch.normal(
+                        mean=0.0,
+                        std=dp_noise_mult * dp_clip,
+                        size=p.grad.shape,
+                        device=p.grad.device,
+                        dtype=p.grad.dtype,
+                    )
+                    p.grad.add_(noise)
+
+            optimizer.step()
+            total_loss += loss.item() * x.size(0)
+
+        avg_train = total_loss / len(train_loader.dataset)
+        val_loss = evaluate_loss(model, val_loader, criterion)
+        if val_loss < best_val:
+            best_val = val_loss
+            best_state = model.state_dict()
+
+        print(f"Epoch {epoch:02d} | train_loss={avg_train:.4f} | val_loss={val_loss:.4f}")
+
+    final_state = best_state if best_state is not None else model.state_dict()
+    model.load_state_dict(final_state)
+    return final_state
+
+
 def run_training_stage(
     series_dict: Dict[int, np.ndarray],
     train_ids: Sequence[int],
@@ -228,7 +286,18 @@ def run_training_stage(
     train_loader = DataLoader(train_dataset, batch_size=cfg.batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=cfg.batch_size, shuffle=False)
 
-    best_state = train_model(model, train_loader, val_loader, epochs=cfg.epochs, lr=cfg.lr)
+    if cfg.dp_use:
+        best_state = train_model_dp(
+            model,
+            train_loader,
+            val_loader,
+            epochs=cfg.epochs,
+            lr=cfg.lr,
+            dp_clip=cfg.dp_clip,
+            dp_noise_mult=cfg.dp_noise_mult,
+        )
+    else:
+        best_state = train_model(model, train_loader, val_loader, epochs=cfg.epochs, lr=cfg.lr)
     checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
     torch.save({"model_state": best_state, "config": vars(cfg)}, checkpoint_path)
     print(f"训练完成，已保存 checkpoint 至 {checkpoint_path}")

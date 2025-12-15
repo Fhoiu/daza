@@ -6,8 +6,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional, Sequence
 
-import numpy as np  # type: ignore
-import torch  # type: ignore
+import numpy as np                
+import torch                
 from .training_module import Config, compute_metrics, rolling_forecast
 
 
@@ -28,7 +28,7 @@ def run_defense_stage(
     log_path: Path,
     attack_log_path: Path,
     plot_user_id: Optional[int] = None,
-    detection_threshold: float = 1.2,
+    detection_threshold: float = 1.05,
     show_metrics: bool = True,
     emit_log: bool = True,
 ) -> DefenseResult:
@@ -77,10 +77,10 @@ def run_defense_stage(
 
     attack_metrics = _load_latest_metrics(attack_log_path)
     detection = None
-    if attack_metrics is not None and "MSE" in attack_metrics:
-        defense_mse = avg_metrics.get("MSE")
-        if defense_mse is not None and defense_mse > 0:
-            detection = attack_metrics["MSE"] > detection_threshold * defense_mse
+    if attack_metrics is not None and "MAPE%" in attack_metrics:
+        defense_mape = avg_metrics.get("MAPE%")
+        if defense_mape is not None and defense_mape > 0:
+            detection = attack_metrics["MAPE%"] > detection_threshold * defense_mape
 
     if show_metrics:
         if detection is True:

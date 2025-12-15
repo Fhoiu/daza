@@ -4,8 +4,8 @@ import argparse
 from pathlib import Path
 from typing import Optional
 
-import matplotlib.pyplot as plt  # type: ignore
-import numpy as np  # type: ignore
+import matplotlib.pyplot as plt                
+import numpy as np                
 
 from module.attack_module import AttackResult, run_attack_stage
 from module.defense_module import DefenseResult, run_defense_stage

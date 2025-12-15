@@ -1,0 +1,3 @@
+{"timestamp": "2025-12-15T16:55:49.161932+00:00", "phase": "attack", "attack_type": "togia_lstm_full_input", "metrics": {"MSE": 0.10433919346222326, "MAE": 0.2625052644043333, "MAPE%": 22.059367726795585}}
+{"timestamp": "2025-12-15T16:57:49.450833+00:00", "phase": "attack", "attack_type": "togia_lstm_full_input", "metrics": {"MSE": 0.10459432293714731, "MAE": 0.2627726984500057, "MAPE%": 21.66566690883184}}
+{"timestamp": "2025-12-15T17:07:39.698255+00:00", "phase": "attack", "attack_type": "togia_lstm_full_input", "metrics": {"MSE": 0.05798091859609663, "MAE": 0.19191975632268524, "MAPE%": 14.956665133163039}}

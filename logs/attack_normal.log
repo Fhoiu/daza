@@ -1,0 +1,6 @@
+{"timestamp": "2025-12-15T16:53:37.703431+00:00", "phase": "attack", "attack_type": "togia_lstm_full_input", "metrics": {"MSE": 0.06187144234746796, "MAE": 0.19835454598690075, "MAPE%": 14.499271317266178}}
+{"timestamp": "2025-12-15T17:08:31.847556+00:00", "phase": "attack", "attack_type": "togia_lstm_full_input", "metrics": {"MSE": 0.05574909200501007, "MAE": 0.18854037414201433, "MAPE%": 14.384996918725417}}
+{"timestamp": "2025-12-15T17:13:03.446212+00:00", "phase": "attack", "attack_type": "togia_lstm_full_input", "metrics": {"MSE": 0.05744029456757378, "MAE": 0.19142960888437102, "MAPE%": 14.43128451129099}}
+{"timestamp": "2025-12-15T17:20:27.782489+00:00", "phase": "attack", "attack_type": "togia_lstm_full_input", "metrics": {"MSE": 0.05337412141775775, "MAE": 0.1846032728089227, "MAPE%": 13.33556819567706}}
+{"timestamp": "2025-12-15T17:24:00.042941+00:00", "phase": "attack", "attack_type": "togia_lstm_full_input", "metrics": {"MSE": 0.05440750769773738, "MAE": 0.18630780298883717, "MAPE%": 13.704155080075985}}
+{"timestamp": "2025-12-15T17:29:30.986181+00:00", "phase": "attack", "attack_type": "togia_lstm_full_input", "metrics": {"MSE": 0.05281562561260149, "MAE": 0.18361724729132325, "MAPE%": 13.722561468091993}}

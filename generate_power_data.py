@@ -7,19 +7,12 @@ import pandas as pd
 
 
 def generate_power_profile(user_id: int, base_seed: int, hours: int) -> pd.DataFrame:
-    """
-    Build a synthetic per-hour consumption series for a single user.
-    The shape combines:
-        - user-specific base load
-        - diurnal cycle
-        - weekly modulation
-        - gaussian noise
-    """
+    
     rng = np.random.default_rng(base_seed + user_id)
     start_ts = datetime(2024, 1, 1)
     timestamps = np.array([start_ts + timedelta(hours=i) for i in range(hours)])
 
-    base_load = rng.uniform(0.8, 2.5)  # kWh baseline
+    base_load = rng.uniform(0.8, 2.5)                
     daily_phase = rng.uniform(0, np.pi * 2)
     weekly_phase = rng.uniform(0, np.pi * 2)
 
