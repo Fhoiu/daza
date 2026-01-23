@@ -18,18 +18,18 @@ from module.training_module import (
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="生成攻击/防御预测对比图")
-    parser.add_argument("--data-path", type=str, default="data/power_consumption.csv", help="输入 CSV 路径")
-    parser.add_argument("--checkpoint-path", type=str, default="checkpoints/lstm_power.pt", help="训练好的模型 checkpoint")
-    parser.add_argument("--attack-log-path", type=str, default="logs/attack_metrics.log", help="攻击指标日志路径")
-    parser.add_argument("--defense-log-path", type=str, default="logs/defense_metrics.log", help="防御指标日志路径")
-    parser.add_argument("--plot-path", type=str, default="outputs/sample_prediction.png", help="预测对比图输出路径")
-    parser.add_argument("--train-users", type=int, default=400, help="训练用户数量")
-    parser.add_argument("--val-users", type=int, default=50, help="验证用户数量")
-    parser.add_argument("--test-users", type=int, default=50, help="测试用户数量")
-    parser.add_argument("--split-seed", type=int, default=2024, help="用户划分随机种子")
-    parser.add_argument("--mask-ratio", type=float, default=None, help="覆盖 checkpoint 内的 mask_ratio")
-    parser.add_argument("--plot-user-id", type=int, default=None, help="指定绘图用户 ID")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data-path", type=str, default="data/power_consumption.csv")
+    parser.add_argument("--checkpoint-path", type=str, default="checkpoints/lstm_power.pt")
+    parser.add_argument("--attack-log-path", type=str, default="logs/attack_metrics.log")
+    parser.add_argument("--defense-log-path", type=str, default="logs/defense_metrics.log")
+    parser.add_argument("--plot-path", type=str, default="outputs/sample_prediction.png")
+    parser.add_argument("--train-users", type=int, default=400)
+    parser.add_argument("--val-users", type=int, default=50)
+    parser.add_argument("--test-users", type=int, default=50)
+    parser.add_argument("--split-seed", type=int, default=2024)
+    parser.add_argument("--mask-ratio", type=float, default=None)
+    parser.add_argument("--plot-user-id", type=int, default=None)
     return parser.parse_args()
 
 

@@ -109,12 +109,12 @@ def main(args: argparse.Namespace):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="LSTM forecast for synthetic power data.")
-    parser.add_argument("--data-path", type=str, default="data/power_consumption.csv", help="数据 CSV 路径")
-    parser.add_argument("--checkpoint-path", type=str, default="checkpoints/lstm_power.pt", help="模型 checkpoint 存储路径")
-    parser.add_argument("--attack-log-path", type=str, default="logs/attack_metrics.log", help="[疑似]数据窃取攻击日志路径")
-    parser.add_argument("--defense-log-path", type=str, default="logs/defense_metrics.log", help="防御验证日志路径")
-    parser.add_argument("--predict-only", action="store_true", help="仅加载 checkpoint 直接预测，跳过训练")
-    parser.add_argument("--plot-user-id", type=int, default=None, help="绘图用户 ID, 默认随机选择测试用户")
-    parser.add_argument("--plot-path", type=str, default="outputs/sample_prediction.png", help="预测对比图保存路径")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data-path", type=str, default="data/power_consumption.csv")
+    parser.add_argument("--checkpoint-path", type=str, default="checkpoints/lstm_power.pt")
+    parser.add_argument("--attack-log-path", type=str, default="logs/attack_metrics.log")
+    parser.add_argument("--defense-log-path", type=str, default="logs/defense_metrics.log")
+    parser.add_argument("--predict-only", action="store_true")
+    parser.add_argument("--plot-user-id", type=int, default=None)
+    parser.add_argument("--plot-path", type=str, default="outputs/sample_prediction.png")
     main(parser.parse_args())

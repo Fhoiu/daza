@@ -8,17 +8,17 @@ from module.training_module import build_series_dict, load_dataset, load_model_f
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="仅执行防御验证阶段")
-    parser.add_argument("--data-path", type=str, default="data/power_consumption.csv", help="输入 CSV 路径")
-    parser.add_argument("--checkpoint-path", type=str, default="checkpoints/lstm_power_normal.pt", help="训练好的正常模型 checkpoint")
-    parser.add_argument("--attack-log-path", type=str, default="logs/attack_normal.log", help="攻击日志路径（正常模型场景）")
-    parser.add_argument("--defense-log-path", type=str, default="logs/defense_normal.log", help="防御日志输出路径（正常模型场景）")
-    parser.add_argument("--train-users", type=int, default=400, help="训练用户数量（需与训练阶段保持一致）")
-    parser.add_argument("--val-users", type=int, default=50, help="验证用户数量")
-    parser.add_argument("--test-users", type=int, default=50, help="测试用户数量")
-    parser.add_argument("--split-seed", type=int, default=2024, help="用户划分随机种子")
-    parser.add_argument("--detection-threshold", type=float, default=1.05, help="攻击/防御 MAPE 比例阈值")
-    parser.add_argument("--plot-user-id", type=int, default=None, help="指定绘图用户 ID（仅决定日志输出内容）")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data-path", type=str, default="data/power_consumption.csv")
+    parser.add_argument("--checkpoint-path", type=str, default="checkpoints/lstm_power_normal.pt")
+    parser.add_argument("--attack-log-path", type=str, default="logs/attack_normal.log")
+    parser.add_argument("--defense-log-path", type=str, default="logs/defense_normal.log")
+    parser.add_argument("--train-users", type=int, default=400)
+    parser.add_argument("--val-users", type=int, default=50)
+    parser.add_argument("--test-users", type=int, default=50)
+    parser.add_argument("--split-seed", type=int, default=2024)
+    parser.add_argument("--detection-threshold", type=float, default=1.05)
+    parser.add_argument("--plot-user-id", type=int, default=None)
     return parser.parse_args()
 
 

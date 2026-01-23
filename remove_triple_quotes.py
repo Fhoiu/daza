@@ -5,7 +5,6 @@ import sys
 
 def main() -> None:
     root = pathlib.Path(".")
-    # 匹配 \"\"\"...\"\"\" 或  的三引号字符串（跨多行）
     pattern = re.compile(r'(|\'\'\'[\s\S]*?\'\'\')', re.MULTILINE)
 
     for path in root.rglob("*.py"):
